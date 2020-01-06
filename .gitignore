@@ -7,3 +7,4 @@ doc/*
 /priv/temp
 /docs
 /cover
+/.elixir_ls/*

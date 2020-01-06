@@ -42,7 +42,13 @@ defmodule Guardian.DB.Token do
   @doc """
   Create a new token based on the JWT and decoded claims.
   """
-  def create(claims, jwt) do
+  def create(%{"sub" => sub} = claims, jwt) do
+    if sub do
+      query_schema()
+      |> where([token], token.sub == ^sub)
+      |> Guardian.DB.repo().delete_all(prefix: prefix())
+    end
+
     prepared_claims =
       claims
       |> Map.put("jwt", jwt)
